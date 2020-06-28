@@ -31,6 +31,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
+Intent intentin;
+
 
   public static final String ACTION_REMOTE_MESSAGE = "io.flutter.plugins.firebasemessaging.NOTIFICATION";
   public static final String EXTRA_REMOTE_MESSAGE = "notification";
@@ -69,11 +71,10 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
     FlutterMain.ensureInitializationComplete(backgroundContext, null);
  Log.i(TAG, "ExceptonCreate ck");
     // If background isolate is not running start it.
-if (Intent.getExtras() != null)
+     intent=getIntent();
+if (intentin.getExtras() != null)
 {
   
-  
- 
         for (String key : Intent.getExtras().keySet()) {
             Object value = Intent.getExtras().get(key);
             Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
