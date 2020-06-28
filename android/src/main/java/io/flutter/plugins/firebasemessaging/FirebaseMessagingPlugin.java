@@ -110,6 +110,8 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
   // BroadcastReceiver implementation.
   @Override
   public void onReceive(Context context, Intent intent) {
+     Log.e(TAG, "onReceive");
+
     String action = intent.getAction();
 
     if (action == null) {
@@ -158,8 +160,9 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
      *  the app is not active to be handled by a background isolate.
      *
      *  `FcmDartService#initialized` is called by the Dart side when the plumbing for
-     *  background message handling is complete.
-     */
+     *  background message handling is complete.*/
+       Log.e(TAG, "on method Call");
+     
     if ("FcmDartService#start".equals(call.method)) {
       long setupCallbackHandle = 0;
       long backgroundMessageHandle = 0;
@@ -195,6 +198,7 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
                 }
               });
       if (mainActivity != null) {
+       Log.e(TAG, "onlunsh");
         sendMessageFromIntent("onLaunch", mainActivity.getIntent());
       }
       result.success(null);
@@ -292,6 +296,7 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
 
   @Override
   public boolean onNewIntent(Intent intent) {
+   Log.e(TAG, "on new initnet");
     boolean res = sendMessageFromIntent("onResume", intent);
     if (res && mainActivity != null) {
       mainActivity.setIntent(intent);
@@ -301,6 +306,7 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
 
   /** @return true if intent contained a message to send. */
   private boolean sendMessageFromIntent(String method, Intent intent) {
+   Log.e(TAG, "sendMessageFromIntent");
     if (CLICK_ACTION_VALUE.equals(intent.getAction())
         || CLICK_ACTION_VALUE.equals(intent.getStringExtra("click_action"))) {
       Map<String, Object> message = new HashMap<>();
