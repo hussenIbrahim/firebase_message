@@ -32,7 +32,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
-Intent intentin;
+static Intent intentin;
 
 
   public static final String ACTION_REMOTE_MESSAGE = "io.flutter.plugins.firebasemessaging.NOTIFICATION";
