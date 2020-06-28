@@ -69,13 +69,13 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
     FlutterMain.ensureInitializationComplete(backgroundContext, null);
  Log.i(TAG, "ExceptonCreate ck");
     // If background isolate is not running start it.
-if (Intent.Extras != null)
+if (Intent.getExtras() != null)
 {
   
   
  
-        for (String key : Intent.Extras.keySet()) {
-            Object value = Intent.Extras.get(key);
+        for (String key : Intent.getExtras().keySet()) {
+            Object value = Intent.getExtras().get(key);
             Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
         }
     
