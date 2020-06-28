@@ -75,8 +75,7 @@ static Intent intentin;
    Intent in= new Intent(this,Activity.class);
    
 Log.i(TAG,  in.getAction());
-  
-}    if (!isIsolateRunning.get()) {
+    if (!isIsolateRunning.get()) {
       SharedPreferences p = backgroundContext.getSharedPreferences(SHARED_PREFERENCES_KEY, 0);
       long callbackHandle = p.getLong(BACKGROUND_SETUP_CALLBACK_HANDLE_KEY, 0);
       startBackgroundIsolate(backgroundContext, callbackHandle);
