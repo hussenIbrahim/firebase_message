@@ -88,7 +88,7 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
     // message.
     // Otherwise use the background isolate to handle message.
     if (isApplicationForeground(this)) {
-      Log.i(TAG, "Exception waiting to execute Dart callback", remoteMessage.messageData);
+      Log.i(TAG, "Exception waiting to execute Dart callback", remoteMessage.data);
 
       Intent intent = new Intent(ACTION_REMOTE_MESSAGE);
       intent.putExtra(EXTRA_REMOTE_MESSAGE, remoteMessage);
