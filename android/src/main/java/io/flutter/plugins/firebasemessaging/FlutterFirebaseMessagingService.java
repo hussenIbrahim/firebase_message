@@ -71,11 +71,16 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
     // If background isolate is not running start it.
 if (Intent.Extras != null)
 {
-    foreach (var key in Intent.Extras.KeySet())
-    {
-        var value = Intent.Extras.GetString(key);
-        Log.Debug(TAG, "Key: {0} Value: {1}", key, value);
-    }
+  
+  
+ 
+        for (String key : Intent.Extras.keySet()) {
+            Object value = Intent.Extras.get(key);
+            Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
+        }
+    
+  
+  
 }    if (!isIsolateRunning.get()) {
       SharedPreferences p = backgroundContext.getSharedPreferences(SHARED_PREFERENCES_KEY, 0);
       long callbackHandle = p.getLong(BACKGROUND_SETUP_CALLBACK_HANDLE_KEY, 0);
