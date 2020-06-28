@@ -67,7 +67,7 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
 
     backgroundContext = getApplicationContext();
     FlutterMain.ensureInitializationComplete(backgroundContext, null);
-
+ Log.i(TAG, "ExceptonCreate ck");
     // If background isolate is not running start it.
     if (!isIsolateRunning.get()) {
       SharedPreferences p = backgroundContext.getSharedPreferences(SHARED_PREFERENCES_KEY, 0);
@@ -105,6 +105,8 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
         new Handler(getMainLooper()).post(new Runnable() {
           @Override
           public void run() {
+             Log.i(TAG, "ExceptonCreate  executeDartCallbackInBackgroundIsolate");
+
             executeDartCallbackInBackgroundIsolate(FlutterFirebaseMessagingService.this, remoteMessage, latch);
           }
         });
@@ -141,6 +143,8 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
    *                       background handling on the dart side.
    */
   public static void startBackgroundIsolate(Context context, long callbackHandle) {
+          Log.e(TAG, "Fatal: startBackgroundIsolate");
+
     FlutterMain.ensureInitializationComplete(context, null);
     String appBundlePath = FlutterMain.findAppBundlePath();
     FlutterCallbackInformation flutterCallback = FlutterCallbackInformation.lookupCallbackInformation(callbackHandle);
@@ -206,6 +210,7 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
    */
   public static void setBackgroundMessageHandle(Context context, Long handle) {
     backgroundMessageHandle = handle;
+     Log.e(TAG, "FsetBackgroundMessageHandle");
 
     // Store background message handle in shared preferences so it can be retrieved
     // by other application instances.
@@ -262,6 +267,8 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
    */
   private static void executeDartCallbackInBackgroundIsolate(Context context, RemoteMessage remoteMessage,
       final CountDownLatch latch) {
+         Log.e(TAG, "executeDartCallbackInBackgroundIsolate");
+
     if (backgroundChannel == null) {
       throw new RuntimeException("setBackgroundChannel was not called before messages came in, exiting.");
     }
@@ -314,6 +321,7 @@ public class FlutterFirebaseMessagingService extends FirebaseMessagingService {
    */
   // TODO(kroikie): Find a better way to determine application state.
   private static boolean isApplicationForeground(Context context) {
+            Log.e(TAG, "isApplicationForeground");
     KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 
     if (keyguardManager.isKeyguardLocked()) {
