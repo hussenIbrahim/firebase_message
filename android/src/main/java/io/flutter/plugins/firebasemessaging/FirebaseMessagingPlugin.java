@@ -196,7 +196,7 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
         sendMessageFromIntent("onLaunch", mainActivity.getIntent());
         RemoteMessage message = mainActivity.getIntent()
             .getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
-        channel.invokeMethod("onToken", message);
+        channel.invokeMethod("onLaunch", message);
       }
       result.success(null);
     } else if ("subscribeToTopic".equals(call.method)) {
@@ -284,10 +284,9 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
     boolean res = sendMessageFromIntent("onResume", intent);
     if (res && mainActivity != null) {
       mainActivity.setIntent(intent);
-    
-      RemoteMessage message =
-      intent.getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
-      channel.invokeMethod("onToken", message);
+
+      RemoteMessage message = intent.getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
+      channel.invokeMethod("onResume", message);
 
     }
     return res;
