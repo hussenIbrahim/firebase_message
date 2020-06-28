@@ -71,7 +71,7 @@ Intent intentin;
     FlutterMain.ensureInitializationComplete(backgroundContext, null);
  Log.i(TAG, "ExceptonCreate ck");
     // If background isolate is not running start it.
-     intentin=getIntent();
+     intentin= Activity.getIntent();
 if (intentin.getExtras() != null)
 {
   
