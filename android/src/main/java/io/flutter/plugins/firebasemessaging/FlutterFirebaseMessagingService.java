@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 package io.flutter.plugins.firebasemessaging;
+import android.app.Activity;
 
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
