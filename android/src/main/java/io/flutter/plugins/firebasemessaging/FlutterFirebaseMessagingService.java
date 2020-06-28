@@ -71,12 +71,12 @@ Intent intentin;
     FlutterMain.ensureInitializationComplete(backgroundContext, null);
  Log.i(TAG, "ExceptonCreate ck");
     // If background isolate is not running start it.
-     intent=getIntent();
+     intentin=getIntent();
 if (intentin.getExtras() != null)
 {
   
-        for (String key : Intent.getExtras().keySet()) {
-            Object value = Intent.getExtras().get(key);
+        for (String key : intentin.getExtras().keySet()) {
+            Object value = intentin.getExtras().get(key);
             Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
         }
     
