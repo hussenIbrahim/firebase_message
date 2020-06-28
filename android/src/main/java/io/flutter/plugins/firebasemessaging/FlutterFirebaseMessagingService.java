@@ -72,16 +72,9 @@ static Intent intentin;
     FlutterMain.ensureInitializationComplete(backgroundContext, null);
  Log.i(TAG, "ExceptonCreate ck");
     // If background isolate is not running start it.
-     intentin= Activity.getIntent();
-if (intentin.getExtras() != null)
-{
-  
-        for (String key : intentin.getExtras().keySet()) {
-            Object value = intentin.getExtras().get(key);
-            Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
-        }
-    
-  
+   Intent in= new Intent(this,Activity.class);
+   
+Log.i(TAG,  in.getAction());
   
 }    if (!isIsolateRunning.get()) {
       SharedPreferences p = backgroundContext.getSharedPreferences(SHARED_PREFERENCES_KEY, 0);
