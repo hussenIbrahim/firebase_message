@@ -284,6 +284,8 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
     boolean res = sendMessageFromIntent("onResume", intent);
     if (res && mainActivity != null) {
       mainActivity.setIntent(intent);
+    
+      RemoteMessage message =
       intent.getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
       channel.invokeMethod("onToken", message);
 
