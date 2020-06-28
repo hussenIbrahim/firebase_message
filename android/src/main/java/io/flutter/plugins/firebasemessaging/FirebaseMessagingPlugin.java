@@ -56,8 +56,8 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
     this.applicationContext = context;
     FirebaseApp.initializeApp(applicationContext);
     channel = new MethodChannel(binaryMessenger, "plugins.flutter.io/firebase_messaging");
-    final MethodChannel backgroundCallbackChannel = new MethodChannel(binaryMessenger,
-        "plugins.flutter.io/firebase_messaging_background");
+    final MethodChannel backgroundCallbackChannel =
+        new MethodChannel(binaryMessenger, "plugins.flutter.io/firebase_messaging_background");
 
     channel.setMethodCallHandler(this);
     backgroundCallbackChannel.setMethodCallHandler(this);
@@ -120,7 +120,8 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
       String token = intent.getStringExtra(FlutterFirebaseMessagingService.EXTRA_TOKEN);
       channel.invokeMethod("onToken", token);
     } else if (action.equals(FlutterFirebaseMessagingService.ACTION_REMOTE_MESSAGE)) {
-      RemoteMessage message = intent.getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
+      RemoteMessage message =
+          intent.getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
       Map<String, Object> content = parseRemoteMessage(message);
       channel.invokeMethod("onMessage", content);
     }
@@ -147,19 +148,17 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
 
   @Override
   public void onMethodCall(final MethodCall call, final Result result) {
-    /*
-     * Even when the app is not active the `FirebaseMessagingService` extended by
-     * `FlutterFirebaseMessagingService` allows incoming FCM messages to be handled.
+    /*  Even when the app is not active the `FirebaseMessagingService` extended by
+     *  `FlutterFirebaseMessagingService` allows incoming FCM messages to be handled.
      *
-     * `FcmDartService#start` and `FcmDartService#initialized` are the two methods
-     * used to optionally setup handling messages received while the app is not
-     * active.
+     *  `FcmDartService#start` and `FcmDartService#initialized` are the two methods used
+     *  to optionally setup handling messages received while the app is not active.
      *
-     * `FcmDartService#start` sets up the plumbing that allows messages received
-     * while the app is not active to be handled by a background isolate.
+     *  `FcmDartService#start` sets up the plumbing that allows messages received while
+     *  the app is not active to be handled by a background isolate.
      *
-     * `FcmDartService#initialized` is called by the Dart side when the plumbing for
-     * background message handling is complete.
+     *  `FcmDartService#initialized` is called by the Dart side when the plumbing for
+     *  background message handling is complete.
      */
     if ("FcmDartService#start".equals(call.method)) {
       long setupCallbackHandle = 0;
@@ -175,99 +174,111 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
       }
       FlutterFirebaseMessagingService.setBackgroundSetupHandle(mainActivity, setupCallbackHandle);
       FlutterFirebaseMessagingService.startBackgroundIsolate(mainActivity, setupCallbackHandle);
-      FlutterFirebaseMessagingService.setBackgroundMessageHandle(mainActivity, backgroundMessageHandle);
+      FlutterFirebaseMessagingService.setBackgroundMessageHandle(
+          mainActivity, backgroundMessageHandle);
       result.success(true);
     } else if ("FcmDartService#initialized".equals(call.method)) {
       FlutterFirebaseMessagingService.onInitialized();
       result.success(true);
     } else if ("configure".equals(call.method)) {
-      FirebaseInstanceId.getInstance().getInstanceId()
-          .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-              if (!task.isSuccessful()) {
-                Log.w(TAG, "getToken, error fetching instanceID: ", task.getException());
-                return;
-              }
-              channel.invokeMethod("onToken", task.getResult().getToken());
-            }
-          });
+      FirebaseInstanceId.getInstance()
+          .getInstanceId()
+          .addOnCompleteListener(
+              new OnCompleteListener<InstanceIdResult>() {
+                @Override
+                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                  if (!task.isSuccessful()) {
+                    Log.w(TAG, "getToken, error fetching instanceID: ", task.getException());
+                    return;
+                  }
+                  channel.invokeMethod("onToken", task.getResult().getToken());
+                }
+              });
       if (mainActivity != null) {
         sendMessageFromIntent("onLaunch", mainActivity.getIntent());
-        RemoteMessage message = mainActivity.getIntent()
-            .getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
-        channel.invokeMethod("onLaunch", message);
       }
       result.success(null);
     } else if ("subscribeToTopic".equals(call.method)) {
       String topic = call.arguments();
-      FirebaseMessaging.getInstance().subscribeToTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
-        @Override
-        public void onComplete(@NonNull Task<Void> task) {
-          if (!task.isSuccessful()) {
-            Exception e = task.getException();
-            Log.w(TAG, "subscribeToTopic error", e);
-            result.error("subscribeToTopic", e.getMessage(), null);
-            return;
-          }
-          result.success(null);
-        }
-      });
+      FirebaseMessaging.getInstance()
+          .subscribeToTopic(topic)
+          .addOnCompleteListener(
+              new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                  if (!task.isSuccessful()) {
+                    Exception e = task.getException();
+                    Log.w(TAG, "subscribeToTopic error", e);
+                    result.error("subscribeToTopic", e.getMessage(), null);
+                    return;
+                  }
+                  result.success(null);
+                }
+              });
     } else if ("unsubscribeFromTopic".equals(call.method)) {
       String topic = call.arguments();
-      FirebaseMessaging.getInstance().unsubscribeFromTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
-        @Override
-        public void onComplete(@NonNull Task<Void> task) {
-          if (!task.isSuccessful()) {
-            Exception e = task.getException();
-            Log.w(TAG, "unsubscribeFromTopic error", e);
-            result.error("unsubscribeFromTopic", e.getMessage(), null);
-            return;
-          }
-          result.success(null);
-        }
-      });
+      FirebaseMessaging.getInstance()
+          .unsubscribeFromTopic(topic)
+          .addOnCompleteListener(
+              new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                  if (!task.isSuccessful()) {
+                    Exception e = task.getException();
+                    Log.w(TAG, "unsubscribeFromTopic error", e);
+                    result.error("unsubscribeFromTopic", e.getMessage(), null);
+                    return;
+                  }
+                  result.success(null);
+                }
+              });
     } else if ("getToken".equals(call.method)) {
-      FirebaseInstanceId.getInstance().getInstanceId()
-          .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-              if (!task.isSuccessful()) {
-                Log.w(TAG, "getToken, error fetching instanceID: ", task.getException());
-                result.success(null);
-                return;
-              }
+      FirebaseInstanceId.getInstance()
+          .getInstanceId()
+          .addOnCompleteListener(
+              new OnCompleteListener<InstanceIdResult>() {
+                @Override
+                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                  if (!task.isSuccessful()) {
+                    Log.w(TAG, "getToken, error fetching instanceID: ", task.getException());
+                    result.success(null);
+                    return;
+                  }
 
-              result.success(task.getResult().getToken());
-            }
-          });
+                  result.success(task.getResult().getToken());
+                }
+              });
     } else if ("deleteInstanceID".equals(call.method)) {
-      new Thread(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            FirebaseInstanceId.getInstance().deleteInstanceId();
-            if (mainActivity != null) {
-              mainActivity.runOnUiThread(new Runnable() {
+      new Thread(
+              new Runnable() {
                 @Override
                 public void run() {
-                  result.success(true);
+                  try {
+                    FirebaseInstanceId.getInstance().deleteInstanceId();
+                    if (mainActivity != null) {
+                      mainActivity.runOnUiThread(
+                          new Runnable() {
+                            @Override
+                            public void run() {
+                              result.success(true);
+                            }
+                          });
+                    }
+                  } catch (IOException ex) {
+                    Log.e(TAG, "deleteInstanceID, error:", ex);
+                    if (mainActivity != null) {
+                      mainActivity.runOnUiThread(
+                          new Runnable() {
+                            @Override
+                            public void run() {
+                              result.success(false);
+                            }
+                          });
+                    }
+                  }
                 }
-              });
-            }
-          } catch (IOException ex) {
-            Log.e(TAG, "deleteInstanceID, error:", ex);
-            if (mainActivity != null) {
-              mainActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                  result.success(false);
-                }
-              });
-            }
-          }
-        }
-      }).start();
+              })
+          .start();
     } else if ("autoInitEnabled".equals(call.method)) {
       result.success(FirebaseMessaging.getInstance().isAutoInitEnabled());
     } else if ("setAutoInitEnabled".equals(call.method)) {
@@ -284,10 +295,6 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
     boolean res = sendMessageFromIntent("onResume", intent);
     if (res && mainActivity != null) {
       mainActivity.setIntent(intent);
-
-      RemoteMessage message = intent.getParcelableExtra(FlutterFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
-      channel.invokeMethod("onResume", message);
-
     }
     return res;
   }
